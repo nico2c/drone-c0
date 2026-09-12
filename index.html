@@ -1,1 +1,81 @@
-<!doctype html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1220"><meta name="description" content="Assistant de préparation de vol pour drones DJI C0 en France"><title>Drone C0 — Assistant de vol</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css?v=20260906-3"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin></head><body><header><div class="brand">◈ <span>Drone C0<small>Assistant de vol — France</small></span></div></header><main><section class="hero"><div><small>PRÉ-VOL INTELLIGENT</small><h1>Prépare ton vol C0<br><em>en quelques secondes.</em></h1><p>Sélectionne ton DJI, vérifie les conditions essentielles et consulte les restrictions autour de ta position.</p></div><strong class="c0">C0<small>&lt; 250 g</small></strong></section><section class="card"><div class="title"><b>01</b><div><h2>Ton drone</h2><p>Choisis le modèle.</p></div></div><select id="droneSelect"></select><div id="droneInfo"></div></section><section class="card"><div class="title"><b>02</b><div><h2>Ta position</h2><p>La géolocalisation prépare AirOps directement sur ta position.</p></div></div><button id="locateBtn">📍 Utiliser ma position</button> <a class="button" id="geoBtn" href="https://www.geoportail.gouv.fr/donnees/restrictions-uas-categorie-ouverte-et-aeromodelisme" target="_blank" rel="noopener">🗺️ Géoportail officiel</a><a class="button" id="airOpsBtn" href="https://airops-supuav.fr/map/" target="_blank" rel="noopener">✈️ AirOps / SUP-UAV</a><div id="locationStatus" class="status">Position non déterminée</div><div id="restrictionStatus" class="restrictionStatus hidden"></div><div id="map" class="map hidden"></div><div id="airOpsPanel" class="hidden" style="margin-top:14px"><iframe id="airOpsFrame" title="Carte AirOps SUP-UAV centrée sur la position" style="width:100%;height:560px;border:1px solid #d8dee8;border-radius:16px;background:#f5f7fa" loading="lazy"></iframe><div id="airOpsFallback" class="status" style="margin-top:8px">Si la carte AirOps ne peut pas être intégrée par le navigateur, utilise le bouton « AirOps / SUP-UAV » ci-dessus : il s'ouvre directement sur ta position.</div></div></section><section class="card"><div class="title"><b>03</b><div><h2>Contrôle réglementaire</h2><p>Chaque point doit être réellement vérifié avant le vol.</p></div></div><div class="rules"><label><input type="checkbox"> <b>Zone aérienne vérifiée</b><small>Géoportail officiel + restrictions temporaires/NOTAM.</small></label><label><input type="checkbox"> <b>Hauteur ≤ 120 m</b><small>Respect du plafond applicable, ou de la hauteur plus basse indiquée par une zone.</small></label><label><input type="checkbox"> <b>Vol à vue (VLOS)</b><small>Drone maintenu en vue directe.</small></label><label><input type="checkbox"> <b>Pas de rassemblement de personnes</b><small>Ne pas survoler un rassemblement.</small></label><label><input type="checkbox"> <b>Vol de jour</b><small>Respecter les règles applicables au vol nocturne.</small></label><label><input type="checkbox"> <b>Vie privée respectée</b><small>Respecter les personnes et données captées.</small></label></div><div id="decision" class="decision">⚠️ Vérification incomplète</div></section><section class="card"><div class="title"><b>04</b><div><h2>Checklist matériel</h2><p>Dernier contrôle avant décollage.</p></div></div><div class="checks"><label><input type="checkbox"> Batterie chargée</label><label><input type="checkbox"> Hélices intactes</label><label><input type="checkbox"> Firmware/app à jour</label><label><input type="checkbox"> Radiocommande OK</label><label><input type="checkbox"> Retour automatique configuré</label><label><input type="checkbox"> Météo compatible</label></div><button id="resetBtn" class="button">Réinitialiser</button></section><section class="sources"><h2>Sources officielles</h2><a href="https://www.ecologie.gouv.fr/politiques-publiques/exploitation-drones-categorie-ouverte" target="_blank" rel="noopener">🇫🇷 DGAC — Catégorie ouverte ↗</a><a href="https://www.geoportail.gouv.fr/donnees/restrictions-uas-categorie-ouverte-et-aeromodelisme" target="_blank" rel="noopener">🗺️ Géoportail — Restrictions ↗</a><a href="https://www.sia.aviation-civile.gouv.fr/" target="_blank" rel="noopener">🛫 SIA — Information aéronautique / NOTAM ↗</a><a href="https://airops-supuav.fr/" target="_blank" rel="noopener">✈️ AirOps SUP-UAV — restrictions temporaires ↗</a><a href="https://www.easa.europa.eu/en/the-agency/faqs/drones-uas" target="_blank" rel="noopener">🇪🇺 EASA — Drones UAS ↗</a></section><p class="disclaimer">Outil d'aide à la préparation, pas une autorisation de vol. AirOps est préparé après géolocalisation et centré sur les coordonnées GPS. Il affiche notamment les restrictions temporaires, NOTAM, SUP-AIP et activations RTBA/R368. AirOps reste une aide informative : les sources SIA/NOTAM et la réglementation applicable font foi.</p></main><footer>Drone C0 · septembre 2026</footer><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin></script><script src="app.js?v=20260906-3"></script></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<meta name="description" content="Checklist simple avant vol de drone en catégorie ouverte en France.">
+<title>Check-list Drone — Catégorie ouverte</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css?v=20260912-1">
+</head>
+<body>
+<header>
+  <div class="brand">🚁 <span>CHECK-LIST DRONE<small>CATÉGORIE OUVERTE · FRANCE</small></span></div>
+</header>
+<main>
+  <section class="hero">
+    <div>
+      <div class="eyebrow">AVANT CHAQUE VOL</div>
+      <h1>Je vérifie.<br><em>Je décide.</em></h1>
+      <p>10 contrôles simples. <strong>Vert = je peux décoller.</strong> Rouge = je ne décolle pas.</p>
+    </div>
+    <div class="badge">C0<br><small>&lt; 250 g*</small></div>
+  </section>
+
+  <section class="card drone-card">
+    <div class="section-head"><span>🚁</span><div><h2>Mon drone</h2><p>Choisis ton modèle</p></div></div>
+    <select id="droneSelect"></select>
+    <div id="droneInfo" class="info"></div>
+  </section>
+
+  <section class="card">
+    <div class="section-head"><span>📍</span><div><h2>Ma position</h2><p>Pour vérifier les restrictions autour de moi</p></div></div>
+    <button id="locateBtn" class="primary">📍 Utiliser ma position</button>
+    <a id="airOpsBtn" class="secondary" href="https://airops-supuav.fr/map/" target="_blank" rel="noopener">✈️ AirOps</a>
+    <a class="secondary" href="https://www.geoportail.gouv.fr/donnees/restrictions-uas-categorie-ouverte-et-aeromodelisme" target="_blank" rel="noopener">🗺️ Géoportail</a>
+    <div id="locationStatus" class="status">Position non déterminée</div>
+  </section>
+
+  <section class="card checklist-card">
+    <div class="section-head"><span>✓</span><div><h2>Les 10 contrôles</h2><p>Coche uniquement lorsque le point est vérifié.</p></div></div>
+    <div class="checks">
+      <label class="check"><input type="checkbox"><span><b>1 · PILOTE</b><small>Formation / obligations du télépilote respectées.</small></span></label>
+      <label class="check"><input type="checkbox"><span><b>2 · DRONE</b><small>Drone, batterie et hélices en bon état ; classe compatible.</small></span></label>
+      <label class="check"><input type="checkbox"><span><b>3 · ZONE DE VOL</b><small>Restrictions géographiques officielles vérifiées.</small></span></label>
+      <label class="check"><input type="checkbox"><span><b>4 · HAUTEUR</b><small>Hauteur autorisée respectée — maximum 120 m sauf restriction.</small></span></label>
+      <label class="check"><input type="checkbox"><span><b>5 · PERSONNES</b><small>Pas de mise en danger ni de survol d’un rassemblement.</small></span></label>
+      <label class="check"><input type="checkbox"><span><b>6 · VUE DIRECTE</b><small>Drone maintenu en vue (VLOS) et règles de jour respectées.</small></span></label>
+      <label class="check"><input type="checkbox"><span><b>7 · AVANT DÉCOLLAGE</b><small>Batterie, RTH, radiocommande et zone de décollage vérifiés.</small></span></label>
+      <label class="check"><input type="checkbox"><span><b>8 · MÉTÉO</b><small>Vent et conditions météo compatibles avec le vol.</small></span></label>
+      <div class="check special" id="r163Box">
+        <div class="r163-title"><b>9 · R163 A, B, C</b><span class="r163-name">GROSTENQUIN-POLYGONE</span></div>
+        <p>La zone R163 A, B, C GROSTENQUIN-POLYGONE est-elle activée ?</p>
+        <div class="choice-row">
+          <button class="choice danger-choice" data-r163="yes">🔴 OUI, activée</button>
+          <button class="choice safe-choice" data-r163="no">🟢 NON, non activée</button>
+        </div>
+        <small class="hint">À confirmer sur la source aéronautique officielle / AirOps avant le vol.</small>
+      </div>
+      <label class="check"><input type="checkbox"><span><b>10 · RÈGLES SPÉCIFIQUES</b><small>Sites sensibles, espaces protégés, arrêtés et autorisations locales vérifiés.</small></span></label>
+    </div>
+  </section>
+
+  <section id="decision" class="decision red">
+    <div class="decision-icon">✕</div>
+    <div><strong>JE NE DÉCOLLE PAS</strong><span id="decisionText">Vérification incomplète — tous les contrôles doivent être validés.</span></div>
+  </section>
+
+  <section class="sources">
+    <h2>À vérifier avant chaque vol</h2>
+    <a href="https://www.geoportail.gouv.fr/donnees/restrictions-uas-categorie-ouverte-et-aeromodelisme" target="_blank" rel="noopener">🗺️ Géoportail — restrictions UAS</a>
+    <a href="https://www.sia.aviation-civile.gouv.fr/" target="_blank" rel="noopener">🛫 SIA — information aéronautique / NOTAM</a>
+    <a href="https://airops-supuav.fr/" target="_blank" rel="noopener">✈️ AirOps / SUP-UAV</a>
+    <a href="https://www.ecologie.gouv.fr/politiques-publiques/exploitation-drones-categorie-ouverte" target="_blank" rel="noopener">🇫🇷 Ministère — catégorie ouverte</a>
+  </section>
+  <p class="disclaimer">Outil d’aide à la préparation : il ne constitue pas une autorisation de vol. Les informations officielles et la réglementation applicable font foi.</p>
+</main>
+<footer>Drone C0 · Check-list catégorie ouverte · France</footer>
+<script src="app.js?v=20260912-1"></script>
+</body>
+</html>
